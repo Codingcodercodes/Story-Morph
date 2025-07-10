@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>StoryMorph ✨</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h2>StoryMorph: Turn Your Moment into a Story</h2>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+       <div class="flash-message">
+          {{ messages[0] }}
+       </div>
+      {% endif %}
+    {% endwith %}
+
+    <form action="/generate" method="POST">
+      <label for="real_moment">Your real-life moment:</label>
+      <textarea name="real_moment" rows="5" required placeholder="Ex: I spilled coffee on my white shirt during a presentation..."></textarea>
+
+      <label for="genre">Choose a story genre:</label>
+      <select name="genre" required>
+        <option value="fantasy">Fantasy</option>
+        <option value="sci-fi">Sci-Fi</option>
+        <option value="rom-com">Rom-Com</option>
+        <option value="thriller">Thriller</option>
+        <option value="mystery">Mystery</option>
+        <option value="horror">Horror</option>
+      </select>
+
+      <button type="submit">Morph My Story ✨</button>
+    </form>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,276 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f2f2f2;
+  color: #222;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+}
+
+/* Container */
+.container {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  max-width: 700px;
+  width: 100%;
+}
+
+/* Headings */
+h1, h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Form Styling */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+textarea, select {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  resize: vertical;
+}
+
+/* Button */
+button {
+  background-color: #7f5af0;
+  color: white;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background-color: #6a45e6;
+}
+
+.back-btn {
+  margin-top: 30px;
+  display: block;
+  text-align: center;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #7b2ff7, #f107a3);
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  text-decoration: none;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.back-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+}
+
+.back-btn:active {
+  transform: scale(0.98);
+}
+
+
+/* Story Output */
+.story-box {
+  background-color: #fafafa;
+  border-left: 5px solid #7f5af0;
+  padding: 20px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  line-height: 1.6;
+  margin-top: 20px;
+}
+
+.flash-message {
+  background-color: #ffe5e5;
+  color: #cc0000;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: bold;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+/* General container and button styling */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  transition: background 0.4s ease;
+}
+
+button {
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+/* Genre Themes */
+.fantasy-theme {
+  background: linear-gradient(135deg, #8e44ad, #3498db);
+
+}
+.fantasy-btn {
+  background-color: #a29bfe;
+}
+
+.sci-fi-theme {
+  background: linear-gradient(to right, #14558e, #19989f);
+}
+.sci-fi-btn {
+  background-color: #7fdbff;
+  color: #002244;
+}
+
+.rom-com-theme {
+  background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+
+}
+
+.rom-com-btn {
+  background-color: #f78fb3;
+}
+
+
+.thriller-theme {
+  background: linear-gradient(to right, #2b0000, #430909, #7c0a02);
+}
+
+.thriller-btn {
+  background-color: #a31f1f;
+  color: white;
+}
+
+
+.mystery-theme {
+  background: linear-gradient(to right, #3e2c41, #2c3e50, #1b1f27);
+}
+
+.mystery-btn {
+  background-color: #5e4b63;
+  color: white;
+}
+
+
+.horror-theme {
+  background: linear-gradient(to right, #0f0f0f, #2b0000, #430000);
+}
+
+.horror-btn {
+  background-color: #990000;
+  color: white;
+}
+
+/* Toggle Switch */
+.toggle-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.toggle-label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.3s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #7f5af0;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* Dark Mode Styles */
+.dark-theme {
+  background-color: #121212;
+  color: #f1f1f1;
+}
+
+.dark-theme .container {
+  background-color: #1e1e1e;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.dark-theme .story-box {
+  background-color: #2a2a2a;
+  border-left-color: #7f5af0;
+  color: #ddd;
+}
+
+.dark-theme .back-btn {
+  background: linear-gradient(135deg, #4c00b0, #d30080);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.dark-theme .toggle-label {
+  color: #f1f1f1;
+}
+
