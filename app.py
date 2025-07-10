@@ -1,3 +1,37 @@
+from flask import Flask, render_template, request, redirect, flash
+from datetime import datetime
+from collections import defaultdict
+import os
+import json
+from dotenv import load_dotenv
+import google.generativeai as genai
+
+# Load environment variables
+load_dotenv()
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+
+app = Flask(__name__)
+app.secret_key = "supersecretkey"
+
+USAGE_FILE = "/tmp/usage.json"
+
+# Load user usage from JSON file
+def load_usage():
+    try:
+        with open(USAGE_FILE, "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {}
+
+# Save user usage back to JSON file
+def save_usage(usage_data):
+    with open(USAGE_FILE, "w") as f:
+        json.dump(usage_data, f)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
 @app.route('/generate', methods=['POST'])
 def generate():
     user_ip = request.remote_addr
@@ -44,3 +78,8 @@ def generate():
     save_usage(usage)
 
     return render_template('result.html', story=story, genre=genre)
+
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
