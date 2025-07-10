@@ -12,10 +12,11 @@ genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
-
 USAGE_FILE = "/tmp/usage.json"
+GENRE_FILE = "genre_data.json"
 
-# Load user usage from JSON file
+# ----------- Helpers -----------
+
 def load_usage():
     try:
         with open(USAGE_FILE, "r") as f:
@@ -23,10 +24,22 @@ def load_usage():
     except FileNotFoundError:
         return {}
 
-# Save user usage back to JSON file
 def save_usage(usage_data):
     with open(USAGE_FILE, "w") as f:
         json.dump(usage_data, f)
+
+def load_genres():
+    try:
+        with open(GENRE_FILE, "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {}
+
+def save_genres(data):
+    with open(GENRE_FILE, "w") as f:
+        json.dump(data, f)
+
+# ----------- Routes -----------
 
 @app.route('/')
 def index():
@@ -38,8 +51,7 @@ def generate():
     today = datetime.now().strftime("%Y-%m-%d")
     usage = load_usage()
 
-    # Get today's count or default to 0
-    today_count = usage.get(user_ip, {}).get(today, {}).get("count", 0)
+    today_count = usage.get(user_ip, {}).get(today, 0)
 
     if today_count >= 2:
         flash("You've already generated 2 stories today! Come back tomorrow 🌙")
@@ -74,29 +86,24 @@ def generate():
     # Update usage
     if user_ip not in usage:
         usage[user_ip] = {}
-
-    usage[user_ip][today] = {
-        "count": today_count + 1,
-        "genre": genre
-    }
-
+    usage[user_ip][today] = usage[user_ip].get(today, 0) + 1
     save_usage(usage)
+
+    # Update genre data
+    genre_data = load_genres()
+    genre_data[genre] = genre_data.get(genre, 0) + 1
+    save_genres(genre_data)
+
     return render_template('result.html', story=story, genre=genre)
 
 @app.route('/analytics')
 def analytics():
     today = datetime.now().strftime("%Y-%m-%d")
     usage = load_usage()
+    genre_counts = load_genres()
 
-    total_users = 0
-    total_stories = 0
-    genre_counts = defaultdict(int)
-
-    for ip, dates in usage.items():
-        if today in dates:
-            total_users += 1
-            total_stories += dates[today]['count']
-            genre_counts[dates[today]['genre']] += 1
+    total_users = sum(1 for ip in usage if today in usage[ip])
+    total_stories = sum(counts.get(today, 0) for counts in usage.values())
 
     return render_template(
         'analytics.html',
@@ -104,7 +111,6 @@ def analytics():
         total_stories=total_stories,
         genre_counts=genre_counts
     )
-
 
 if __name__ == '__main__':
     app.run(debug=True)
