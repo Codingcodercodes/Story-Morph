@@ -39,7 +39,7 @@ def generate():
     usage = load_usage()
 
     # Get today's count or default to 0
-    today_count = usage.get(user_ip, {}).get(today, 0)
+    today_count = usage.get(user_ip, {}).get(today, {}).get("count", 0)
 
     if today_count >= 2:
         flash("You've already generated 2 stories today! Come back tomorrow 🌙")
@@ -74,44 +74,37 @@ def generate():
     # Update usage
     if user_ip not in usage:
         usage[user_ip] = {}
-    usage[user_ip][today] = today_count + 1
 
-    # Track analytics
-    analytics = usage.get("analytics", {})
-    today_data = analytics.get(today, {
-        "total_users": [],
-        "total_generations": 0,
-        "genres": {}
-    })
+    usage[user_ip][today] = {
+        "count": today_count + 1,
+        "genre": genre
+    }
 
-    if user_ip not in today_data["total_users"]:
-        today_data["total_users"].append(user_ip)
-
-    today_data["total_generations"] += 1
-    today_data["genres"][genre] = today_data["genres"].get(genre, 0) + 1
-
-    analytics[today] = today_data
-    usage["analytics"] = analytics
-
-    # Save everything
     save_usage(usage)
-
     return render_template('result.html', story=story, genre=genre)
 
 @app.route('/analytics')
 def analytics():
-    usage = load_usage()
-    analytics_data = usage.get("analytics", {})
-
-    # Get today's date or show the latest available
     today = datetime.now().strftime("%Y-%m-%d")
-    today_data = analytics_data.get(today)
+    usage = load_usage()
 
-    if not today_data:
-        flash("No analytics data for today.")
-        return redirect('/')
+    total_users = 0
+    total_stories = 0
+    genre_counts = defaultdict(int)
 
-    return render_template('analytics.html', data=today_data, date=today)
+    for ip, dates in usage.items():
+        if today in dates:
+            total_users += 1
+            total_stories += dates[today]['count']
+            genre_counts[dates[today]['genre']] += 1
+
+    return render_template(
+        'analytics.html',
+        total_users=total_users,
+        total_stories=total_stories,
+        genre_counts=genre_counts
+    )
+
 
 if __name__ == '__main__':
     app.run(debug=True)
