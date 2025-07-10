@@ -1,48 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Daily Analytics - StoryMorph</title>
+    <meta charset="UTF-8">
+    <title>StoryMorph Analytics</title>
     <style>
         body {
-            font-family: sans-serif;
-            max-width: 600px;
-            margin: 50px auto;
-            background: #f9f9f9;
-            padding: 20px;
-            border-radius: 12px;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f4f4;
+            margin: 2rem;
             color: #333;
         }
         h1 {
-            text-align: center;
-            margin-bottom: 30px;
+            color: #444;
         }
-        .stats {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        .stat {
+            margin: 1rem 0;
+            font-size: 1.2rem;
         }
-        ul {
-            padding-left: 20px;
+        .genre-list {
+            margin-top: 1rem;
+            padding-left: 1rem;
         }
-        li {
-            margin-bottom: 5px;
+        .genre-list li {
+            margin: 0.5rem 0;
+        }
+        .back {
+            margin-top: 2rem;
+        }
+        a {
+            text-decoration: none;
+            color: #0077cc;
         }
     </style>
 </head>
 <body>
-    <h1>📊 Analytics for {{ date }}</h1>
+    <h1>📊 StoryMorph Daily Analytics</h1>
 
-    <div class="stats">
-        <p><strong>👥 Unique Users:</strong> {{ data.total_users|length }}</p>
-        <p><strong>📚 Total Stories Generated:</strong> {{ data.total_generations }}</p>
+    <div class="stat">🧍 Total Unique Users Today: <strong>{{ total_users }}</strong></div>
+    <div class="stat">📚 Total Stories Generated: <strong>{{ total_stories }}</strong></div>
 
-        <h3>🎭 Genre Popularity:</h3>
-        <ul>
-        {% for genre, count in data.genres.items() %}
-            <li>{{ genre }} — {{ count }}</li>
+    <h3>🎭 Stories by Genre:</h3>
+    <ul class="genre-list">
+        {% for genre, count in genre_counts.items() %}
+            <li><strong>{{ genre.capitalize() }}</strong>: {{ count }}</li>
+        {% else %}
+            <li>No data yet</li>
         {% endfor %}
-        </ul>
+    </ul>
+
+    <div class="back">
+        <a href="/">← Back to Home</a>
     </div>
 </body>
 </html>
