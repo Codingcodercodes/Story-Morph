@@ -2,21 +2,31 @@ from flask import Flask, render_template, request, redirect, flash
 from datetime import datetime
 from collections import defaultdict
 import os
+import json
 from dotenv import load_dotenv
 import google.generativeai as genai
-
-# Structure: { ip_address: { "date": "2025-07-10", "count": 1 } }
-user_usage = defaultdict(lambda: {"date": "", "count": 0})
-
-
 
 # Load environment variables
 load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 app = Flask(__name__)
-app.secret_key = "supersecretkey"  # Any random string works for now
+app.secret_key = "supersecretkey"
 
+USAGE_FILE = "usage.json"
+
+# Load user usage from JSON file
+def load_usage():
+    try:
+        with open(USAGE_FILE, "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {}
+
+# Save user usage back to JSON file
+def save_usage(usage_data):
+    with open(USAGE_FILE, "w") as f:
+        json.dump(usage_data, f)
 
 @app.route('/')
 def index():
@@ -26,24 +36,17 @@ def index():
 def generate():
     user_ip = request.remote_addr
     today = datetime.now().strftime("%Y-%m-%d")
+    usage = load_usage()
 
-    usage = user_usage[user_ip]
+    # Get today's count or default to 0
+    today_count = usage.get(user_ip, {}).get(today, 0)
 
-    if usage["date"] != today:
-        # First visit today – reset count
-        usage["date"] = today
-        usage["count"] = 0
-
-    if usage["count"] >= 2:
-        flash("You've already generated 2 stories today! Come back tomorrow 😉✌️")
+    if today_count >= 2:
+        flash("You've already generated 2 stories today! Come back tomorrow 🌙")
         return redirect('/')
 
-    user_input = request.form['real_moment'].strip()
+    user_input = request.form['real_moment']
     genre = request.form['genre']
-
-    if not user_input:
-        flash("Please share a moment before generating a story!")
-        return redirect('/')
 
     prompt = f"""
     Turn this real-life moment into a creative {genre} short story:
@@ -58,13 +61,15 @@ def generate():
 
     model = genai.GenerativeModel(model_name="gemini-1.5-flash")
     response = model.generate_content(prompt)
-
     story = response.text
-    usage["count"] += 1  # Increment usage
+
+    # Update usage
+    if user_ip not in usage:
+        usage[user_ip] = {}
+    usage[user_ip][today] = today_count + 1
+    save_usage(usage)
 
     return render_template('result.html', story=story, genre=genre)
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
