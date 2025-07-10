@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <head>
   <meta charset="UTF-8">
   <title>StoryMorph Analytics</title>
@@ -115,6 +116,45 @@
   <div class="back">
     <a href="/">← Back to Home</a>
   </div>
+<div style="margin-top: 3rem;">
+  <canvas id="genreChart" height="100"></canvas>
+</div>
+
+<script>
+  const genreData = {{ stories_by_genre | tojson }};
+  const genres = Object.keys(genreData);
+  const counts = Object.values(genreData);
+
+  const ctx = document.getElementById('genreChart').getContext('2d');
+  const genreChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: genres,
+      datasets: [{
+        label: 'Stories per Genre',
+        data: counts,
+        backgroundColor: [
+          '#f94144', '#f3722c', '#f9c74f', '#90be6d',
+          '#43aa8b', '#577590', '#9d4edd'
+        ],
+        borderRadius: 8
+      }]
+    },
+    options: {
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 1
+          }
+        }
+      }
+    }
+  });
+</script>
 
 </body>
 </html>
