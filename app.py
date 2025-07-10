@@ -75,11 +75,28 @@ def generate():
     if user_ip not in usage:
         usage[user_ip] = {}
     usage[user_ip][today] = today_count + 1
+
+    # Track analytics
+    analytics = usage.get("analytics", {})
+    today_data = analytics.get(today, {
+        "total_users": [],
+        "total_generations": 0,
+        "genres": {}
+    })
+
+    if user_ip not in today_data["total_users"]:
+        today_data["total_users"].append(user_ip)
+
+    today_data["total_generations"] += 1
+    today_data["genres"][genre] = today_data["genres"].get(genre, 0) + 1
+
+    analytics[today] = today_data
+    usage["analytics"] = analytics
+
+    # Save everything
     save_usage(usage)
 
     return render_template('result.html', story=story, genre=genre)
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
