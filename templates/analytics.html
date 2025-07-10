@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Daily Analytics - StoryMorph</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 12px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .stats {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>📊 Analytics for {{ date }}</h1>
+
+    <div class="stats">
+        <p><strong>👥 Unique Users:</strong> {{ data.total_users|length }}</p>
+        <p><strong>📚 Total Stories Generated:</strong> {{ data.total_generations }}</p>
+
+        <h3>🎭 Genre Popularity:</h3>
+        <ul>
+        {% for genre, count in data.genres.items() %}
+            <li>{{ genre }} — {{ count }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
