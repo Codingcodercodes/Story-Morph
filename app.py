@@ -98,5 +98,20 @@ def generate():
 
     return render_template('result.html', story=story, genre=genre)
 
+@app.route('/analytics')
+def analytics():
+    usage = load_usage()
+    analytics_data = usage.get("analytics", {})
+
+    # Get today's date or show the latest available
+    today = datetime.now().strftime("%Y-%m-%d")
+    today_data = analytics_data.get(today)
+
+    if not today_data:
+        flash("No analytics data for today.")
+        return redirect('/')
+
+    return render_template('analytics.html', data=today_data, date=today)
+
 if __name__ == '__main__':
     app.run(debug=True)
