@@ -8,11 +8,12 @@
 <body>
   <div class="container">
     <h2>StoryMorph: Turn Your Moment into a Story</h2>
+
     {% with messages = get_flashed_messages() %}
       {% if messages %}
-       <div class="flash-message">
+        <div class="flash-message">
           {{ messages[0] }}
-       </div>
+        </div>
       {% endif %}
     {% endwith %}
 
@@ -32,6 +33,23 @@
 
       <button type="submit">Morph My Story ✨</button>
     </form>
+
+    <!-- Analytics Button -->
+    <div style="text-align: center; margin-top: 2rem;">
+      <a href="/analytics" style="
+          background-color: #6c5ce7;
+          color: white;
+          padding: 10px 20px;
+          border-radius: 8px;
+          text-decoration: none;
+          font-weight: bold;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+          transition: background-color 0.3s ease;
+      " onmouseover="this.style.backgroundColor='#5a4dbf'" onmouseout="this.style.backgroundColor='#6c5ce7'">
+          📊 Show Analytics
+      </a>
+    </div>
+
   </div>
 
   <script src="{{ url_for('static', filename='script.js') }}"></script>
