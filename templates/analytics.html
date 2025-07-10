@@ -1,55 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>StoryMorph Analytics</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #f4f4f4;
-            margin: 2rem;
-            color: #333;
-        }
-        h1 {
-            color: #444;
-        }
-        .stat {
-            margin: 1rem 0;
-            font-size: 1.2rem;
-        }
-        .genre-list {
-            margin-top: 1rem;
-            padding-left: 1rem;
-        }
-        .genre-list li {
-            margin: 0.5rem 0;
-        }
-        .back {
-            margin-top: 2rem;
-        }
-        a {
-            text-decoration: none;
-            color: #0077cc;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>StoryMorph Analytics</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f9f9fb;
+      padding: 2rem;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      background: linear-gradient(135deg, #a29bfe, #81ecec);
+      color: #fff;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.02);
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .card p {
+      font-size: 2.5rem;
+      margin: 0.5rem 0 0;
+    }
+
+    .genre-section {
+      background: #fff;
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .genre-section h3 {
+      margin-top: 0;
+      color: #555;
+    }
+
+    .genre-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 0.5rem 0 0;
+    }
+
+    .genre-list li {
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .back {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .back a {
+      color: #6c5ce7;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .back a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-    <h1>📊 StoryMorph Daily Analytics</h1>
 
-    <div class="stat">🧍 Total Unique Users Today: <strong>{{ total_users }}</strong></div>
-    <div class="stat">📚 Total Stories Generated: <strong>{{ total_stories }}</strong></div>
+  <h1>📊 StoryMorph Daily Analytics</h1>
 
-    <h3>🎭 Stories by Genre:</h3>
-    <ul class="genre-list">
-        {% for genre, count in genre_counts.items() %}
-            <li><strong>{{ genre.capitalize() }}</strong>: {{ count }}</li>
-        {% else %}
-            <li>No data yet</li>
-        {% endfor %}
-    </ul>
-
-    <div class="back">
-        <a href="/">← Back to Home</a>
+  <div class="grid">
+    <div class="card">
+      <h2>🧍 Unique Users</h2>
+      <p>{{ total_users }}</p>
     </div>
+    <div class="card">
+      <h2>📚 Stories Generated</h2>
+      <p>{{ total_stories }}</p>
+    </div>
+  </div>
+
+  <div class="genre-section">
+    <h3>🎭 Stories by Genre</h3>
+    <ul class="genre-list">
+      {% for genre, count in genre_counts.items() %}
+        <li><strong>{{ genre.capitalize() }}</strong>: {{ count }}</li>
+      {% else %}
+        <li>No stories yet</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="back">
+    <a href="/">← Back to Home</a>
+  </div>
+
 </body>
 </html>
