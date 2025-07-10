@@ -13,7 +13,7 @@ genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
 
-USAGE_FILE = "usage.json"
+USAGE_FILE = "/tmp/usage.json"
 
 # Load user usage from JSON file
 def load_usage():
